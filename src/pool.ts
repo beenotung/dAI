@@ -1,4 +1,4 @@
-import { compete, fitness } from './ga'
+import { CompeteFn, evolve } from './ga'
 import { Network } from './nn'
 
 let { random, floor, max } = Math
@@ -14,22 +14,10 @@ function shuffle(pool: Network[]): void {
   }
 }
 
-export function evolve(pool: Network[]): void {
+export function evolvePool(competeFn: CompeteFn, pool: Network[]): void {
   shuffle(pool)
   let pool_size = pool.length
   for (let i = 0; i + 1 < pool_size; i += 2) {
-    compete(pool[i], pool[i + 1])
+    evolve(competeFn, pool[i], pool[i + 1])
   }
-}
-
-export function sampleFitness(pool: Network[]): number {
-  return fitness(pool[0])
-}
-
-export function bestFitness(pool: Network[]): number {
-  let bestFitness = 0
-  pool.forEach(network => {
-    bestFitness = max(bestFitness, fitness(network))
-  })
-  return bestFitness
 }

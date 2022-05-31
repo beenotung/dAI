@@ -1,51 +1,25 @@
-import {
-  Network,
-  NetworkSpec,
-  randomActivation,
-  randomValue,
-  runNetwork,
-} from './nn'
+import { Network, randomActivation, randomValue } from './nn'
+
 let { random } = Math
 
-export type Gene = {
-  network: Network
-  spec: NetworkSpec
-  fitness: number
-}
+let compete_output: [stronger: Network, weaker: Network] = [] as any
 
-export function fitness(network: Network): number {
-  let N_Sample = 100
-  let acc = 0
-  for (let i_sample = 0; i_sample < N_Sample; i_sample++) {
-    let a = random() < 0.5
-    let b = random() < 0.5
-    let c = a && b ? false : !a && !b ? false : a || b
-
-    let x1 = a ? 1 : -1
-    let x2 = b ? 1 : -1
-    let y1 = c ? 1 : -1
-
-    let inputs = [x1, x2]
-    let outputs = runNetwork(network, inputs)
-    let e = y1 - outputs[0]
-    acc += e * e
-  }
-  let mse = acc / N_Sample
-  return 1 / (mse + 1)
-}
+export type CompeteFn = (
+  a: Network,
+  b: Network,
+  output: [stronger: Network, weaker: Network],
+) => boolean
 
 let Crossover_Chance = 0.5
 
-export function compete(a: Network, b: Network) {
-  let aFitness = fitness(a)
-  let bFitness = fitness(b)
-  if (aFitness === bFitness) {
+export function evolve(compete: CompeteFn, a: Network, b: Network) {
+  if (!compete(a, b, compete_output)) {
     return
   }
+
   // a is stronger than b
-  if (aFitness < bFitness) {
-    ;[a, b] = [b, a]
-  }
+  ;[a, b] = compete_output
+
   if (random() < Crossover_Chance) {
     crossover(a, b)
   } else {
