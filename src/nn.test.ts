@@ -1,4 +1,4 @@
-import { Network, runNetwork } from './nn'
+import { Activation as Fn, Network, runNetwork } from './nn'
 
 let model: Network = {
   weights: [
@@ -9,6 +9,7 @@ let model: Network = {
     [[20, 20]],
   ],
   biases: [[-10, 30], [-30]],
+  activations: [[Fn.sigmoid, Fn.sigmoid], [Fn.sigmoid]],
 }
 
 function test(inputs: number[]) {

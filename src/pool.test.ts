@@ -1,5 +1,5 @@
 import { Network, NetworkSpec, randomNetwork } from './nn'
-import { bestFitness, evolve } from './pool'
+import { bestFitness, evolve, sampleFitness } from './pool'
 
 let spec: NetworkSpec = {
   input_d: 2,
@@ -13,11 +13,13 @@ for (let i = 0; i < pool_size; i++) {
   pool[i] = randomNetwork(spec)
 }
 
-let N_Round = 500
+let N_Round = 2_500
+let Sample_Batch = 100
 for (let i = 0; i < N_Round; i++) {
   evolve(pool)
-  if (i % 10 === 0) {
-    // console.log('round', i, 'sample fitness:', sampleFitness(pool))
-    console.log('round', i, 'best fitness:', bestFitness(pool))
+  if (i % Sample_Batch === 0) {
+    console.log('round', i, 'sample fitness:', sampleFitness(pool))
+    // console.log('round', i, 'best fitness:', bestFitness(pool))
   }
 }
+console.dir(pool[0], { depth: 20 })
