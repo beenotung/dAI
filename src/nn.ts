@@ -138,5 +138,5 @@ function elu(x: number): number {
 let loge = log(E)
 
 function softplus(x: number): number {
-  return log(1 + exp(x)) / loge
+  return x > 35 ? x : log(1 + exp(x)) / loge
 }
