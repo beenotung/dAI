@@ -1,4 +1,4 @@
-let { floor, exp, tanh, random } = Math
+let { floor, exp, tanh, random, log, E } = Math
 
 export type Network = {
   // layer -> output node -> activation function
@@ -105,14 +105,18 @@ export enum Activation {
   tanh = 2,
   relu = 3,
   leaky_relu = 4,
+  elu = 5,
+  softplus = 6,
 }
-let N_Activation = 4
+let N_Activation = 6
 
 let Activations = {
   [Activation.sigmoid]: sigmoid,
   [Activation.tanh]: tanh,
   [Activation.relu]: relu,
   [Activation.leaky_relu]: leaky_relu,
+  [Activation.elu]: elu,
+  [Activation.softplus]: softplus,
 }
 
 function sigmoid(x: number): number {
@@ -120,9 +124,19 @@ function sigmoid(x: number): number {
 }
 
 function relu(x: number): number {
-  return x > 0 ? x : 0
+  return x >= 0 ? x : 0
 }
 
 function leaky_relu(x: number): number {
-  return x > 0 ? x : 0.01 * x
+  return x >= 0 ? x : 0.01 * x
+}
+
+function elu(x: number): number {
+  return x >= 0 ? x : exp(x) - 1
+}
+
+let loge = log(E)
+
+function softplus(x: number): number {
+  return log(1 + exp(x)) / loge
 }
