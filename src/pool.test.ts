@@ -26,7 +26,7 @@ for (let i = 0; i < N_Round; i++) {
 }
 console.dir(pool[0], { depth: 20 })
 
-export function fitness(network: Network): number {
+function fitness(network: Network): number {
   let N_Sample = 100
   let acc = 0
   for (let i_sample = 0; i_sample < N_Sample; i_sample++) {
@@ -47,7 +47,7 @@ export function fitness(network: Network): number {
   return 1 / (mse + 1)
 }
 
-export function compete(
+function compete(
   a: Network,
   b: Network,
   output: [stronger: Network, weaker: Network],
@@ -67,11 +67,11 @@ export function compete(
   return true
 }
 
-export function sampleFitness(pool: Network[]): number {
+function sampleFitness(pool: Network[]): number {
   return fitness(pool[0])
 }
 
-export function bestFitness(pool: Network[]): number {
+function bestFitness(pool: Network[]): number {
   let bestFitness = 0
   pool.forEach(network => {
     bestFitness = max(bestFitness, fitness(network))
