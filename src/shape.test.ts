@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { getShape } from './shape'
+import { getShape, reshape } from './shape'
 
 describe('getShape', () => {
   it('should get shape of 1d vector', () => {
@@ -59,4 +59,11 @@ describe('getShape', () => {
       ]),
     ).deep.equals([1, 4, 2, 3])
   })
+})
+
+describe('reshape', () => {
+  // TODO
+})
+describe('flatten', () => {
+  // TODO
 })
